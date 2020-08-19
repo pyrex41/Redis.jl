@@ -53,7 +53,11 @@ export bgrewriteaof, bgsave, client_list, client_pause, client_setname, cluster_
        role, save, shutdown, slaveof, time
 # Sentinel commands
 export sentinel_masters, sentinel_master, sentinel_slaves, sentinel_getmasteraddrbyname,
-       sentinel_reset, sentinel_failover, sentinel_monitor, sentinel_remove, sentinel_set
+    sentinel_reset, sentinel_failover, sentinel_monitor, sentinel_remove, sentinel_set
+
+# Stream commands // partial for now
+export xadd, xrange, xrevrange, xlen
+
 # Redis constants
 # TODO: add more, consider puuting these in separate constants.jl
 export REDIS_PERSISTENT_KEY, REDIS_EXPIRED_KEY

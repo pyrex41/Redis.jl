@@ -169,7 +169,7 @@ resorting to the use of `Dict`, which cannot be used in the case where all entri
 # Stream commands
 @redisfunction "xadd" Integer key ID field value fvpairs...    
 @redisfunction "xrange" OrderedSet{AbstractString} key start end_ options
-@redisfunction "xervrange" OrderedSet{AbstractString} key end_ start options
+@redisfunction "xrevrange" OrderedSet{AbstractString} key end_ start options
 @redisfunction "xlen" Integer key
 
 
