@@ -165,6 +165,14 @@ resorting to the use of `Dict`, which cannot be used in the case where all entri
 @redisfunction "zscore" Union{AbstractString, Nothing} key member
 @redisfunction "zscan" Set{AbstractString} key cursor::Integer options...
 
+
+# Stream commands
+@redisfunction "xadd" Integer key ID field value fvpairs...    
+@redisfunction "xrange" OrderedSet{AbstractString} key start end_ options
+@redisfunction "xervrange" OrderedSet{AbstractString} key end_ start options
+@redisfunction "xlen" Integer key
+
+
 function _build_store_internal(destination, numkeys, keys, weights, aggregate, command)
     length(keys) > 0 || throw(ClientException("Must supply at least one key"))
     suffix = []
