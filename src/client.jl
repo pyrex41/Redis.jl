@@ -1,4 +1,5 @@
 import DataStructures.OrderedSet
+import DataStructures.OrderedDict
 
 flatten(token) = string(token)
 flatten(token::Vector{UInt8}) = [token]
@@ -116,6 +117,20 @@ function convert_response(::Type{Array{Union{T, Nothing}, 1}}, response) where {
         end
         r
     end
+end
+
+function convert_response(::Type{OrderedDict{T, Dict{T,T}}}, response) where {T <: AbstractString}
+    d = OrderedDict{AbstractString, Dict{AbstractString,AbstractString}}()
+    for r in response
+        d2 = Dict{AbstractString,AbstractString}()
+        for i=2:2:length(r[2])
+            k = r[2][i-1]
+            v = r[2][i]
+            d2[k] = v
+        end
+        d[r[1]] = d2
+    end
+    d
 end
 
 function open_transaction(conn::RedisConnection)
