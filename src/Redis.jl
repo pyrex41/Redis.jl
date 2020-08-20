@@ -56,7 +56,7 @@ export sentinel_masters, sentinel_master, sentinel_slaves, sentinel_getmasteradd
     sentinel_reset, sentinel_failover, sentinel_monitor, sentinel_remove, sentinel_set
 
 # Stream commands // partial for now
-export xadd, xrange, xrevrange, xlen
+export xadd, xrange, xrevrange, xlen, xread
 
 # Redis constants
 # TODO: add more, consider puuting these in separate constants.jl

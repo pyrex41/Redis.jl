@@ -119,8 +119,9 @@ function convert_response(::Type{Array{Union{T, Nothing}, 1}}, response) where {
     end
 end
 
-function convert_response(::Type{OrderedDict{T, Dict{T,T}}}, response) where {T <: AbstractString}
-    d = OrderedDict{AbstractString, Dict{AbstractString,AbstractString}}()
+# for xrange
+function convert_response(::Type{Dict{AbstractString, Dict{AbstractString,AbstractString}}}, response)
+    d = Dict{T, Dict{T,T}}()
     for r in response
         d2 = Dict{AbstractString,AbstractString}()
         for i=2:2:length(r[2])
@@ -132,6 +133,30 @@ function convert_response(::Type{OrderedDict{T, Dict{T,T}}}, response) where {T 
     end
     d
 end
+
+# for xread
+function convert_response(::Type{Dict{AbstractString,Dict{AbstractString, Dict{AbstractString,AbstractString}}}}, response)
+    d1 = Dict{AbstractString,Dict{AbstractString,Dict{AbstractString,AbstractString}}}()
+    for stream in response
+        stream_name = stream[1]
+        data = stream[2]
+        d2 = Dict{AbstractString,Dict{AbstractString,AbstractString}}()
+        for payload in data
+            xid = payload[1]
+            kvdata = payload[2]
+            d3 = Dict{AbstractString,AbstractString}()
+            for i=2:2:length(kvdata)
+                k = kvdata[i-1]
+                v = kvdata[i]
+                d3[k] = v
+            end
+            d2[xid] = d3
+        end
+        d1[stream_name] = d2
+    end
+    d1
+end
+
 
 function open_transaction(conn::RedisConnection)
     t = TransactionConnection(conn)
