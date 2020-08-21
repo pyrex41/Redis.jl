@@ -58,6 +58,9 @@ export sentinel_masters, sentinel_master, sentinel_slaves, sentinel_getmasteradd
 # Stream commands // partial for now
 export xadd, xrange, xrevrange, xlen, xread
 
+# for development
+export raw_execute
+
 # Redis constants
 # TODO: add more, consider puuting these in separate constants.jl
 export REDIS_PERSISTENT_KEY, REDIS_EXPIRED_KEY

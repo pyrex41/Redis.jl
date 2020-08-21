@@ -120,8 +120,8 @@ function convert_response(::Type{Array{Union{T, Nothing}, 1}}, response) where {
 end
 
 # for xrange
-function convert_response(::Type{Dict{AbstractString, Dict{AbstractString,AbstractString}}}, response)
-    d = Dict{T, Dict{T,T}}()
+function convert_response(::Type{OrderedDict{AbstractString, Dict{AbstractString,AbstractString}}}, response)
+    d = OrderedDict{AbstractString, Dict{AbstractString,AbstractString}}()
     for r in response
         d2 = Dict{AbstractString,AbstractString}()
         for i=2:2:length(r[2])
@@ -135,12 +135,12 @@ function convert_response(::Type{Dict{AbstractString, Dict{AbstractString,Abstra
 end
 
 # for xread
-function convert_response(::Type{Dict{AbstractString,Dict{AbstractString, Dict{AbstractString,AbstractString}}}}, response)
-    d1 = Dict{AbstractString,Dict{AbstractString,Dict{AbstractString,AbstractString}}}()
+function convert_response(::Type{Dict{AbstractString,OrderedDict{AbstractString, Dict{AbstractString,AbstractString}}}}, response)
+    d1 = Dict{AbstractString,OrderedDict{AbstractString,Dict{AbstractString,AbstractString}}}()
     for stream in response
         stream_name = stream[1]
         data = stream[2]
-        d2 = Dict{AbstractString,Dict{AbstractString,AbstractString}}()
+        d2 = OrderedDict{AbstractString,Dict{AbstractString,AbstractString}}()
         for payload in data
             xid = payload[1]
             kvdata = payload[2]
@@ -255,4 +255,10 @@ macro sentinelfunction(command, ret_type, args...)
             convert_response($ret_type, response)
         end
     end
+end
+
+# for development
+function raw_execute(c::RedisConnection, command_name, args...)
+    aa  = map(string, flatten_command(command_name, args...))
+    execute_command(c, aa)
 end
